@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TAT2FACE — The Synthetic Sound of Real Life</title>
-<meta name="description" content="Original music by Tat2face (Chad Kerns). The Synthetic Sound of Real Life.">
+<meta name="description" content="All the music of Tat2face (Chad Kerns) — the singles and the full Desecrated Dimensions album. The Synthetic Sound of Real Life.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Cinzel:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -30,16 +30,19 @@
   .progwrap { margin:14px 6px 0; }
   input[type=range] { width:100%; accent-color:#c9a227; height:28px; }
   .times { display:flex; justify-content:space-between; font-size:12px; color:#8d8271; margin-top:-4px; }
-  .tracks { margin-top:26px; display:flex; flex-direction:column; gap:14px; }
-  .track { border:1px solid #3a2f16; border-radius:14px; padding:16px 18px; background:linear-gradient(180deg,#12100a,#0a0906); cursor:pointer; }
+  .sect { margin:34px 0 4px; font-family:'Pirata One',serif; font-size:26px; letter-spacing:2px; color:#e9c766; }
+  .sectnote { font-size:12.5px; color:#8d8271; letter-spacing:1px; margin-bottom:6px; }
+  .tracks { margin-top:12px; display:flex; flex-direction:column; gap:12px; }
+  .track { border:1px solid #3a2f16; border-radius:14px; padding:15px 18px; background:linear-gradient(180deg,#12100a,#0a0906); cursor:pointer; }
   .track.active { border-color:#c9a227; box-shadow:0 0 16px rgba(201,162,39,.25); }
   .trow { display:flex; align-items:center; gap:14px; }
   .tico { width:42px; height:42px; flex:0 0 42px; border-radius:50%; border:1.5px solid #c9a227; color:#e9c766;
           display:flex; align-items:center; justify-content:center; font-size:16px; background:#000; }
-  .tname { font-family:'Cinzel',serif; font-size:17px; font-weight:700; color:#efe8d6; letter-spacing:.5px; }
+  .tnum { font-size:12px; color:#6f6450; width:20px; text-align:right; flex:0 0 20px; }
+  .tname { font-family:'Cinzel',serif; font-size:16.5px; font-weight:700; color:#efe8d6; letter-spacing:.5px; }
   .tdur { margin-left:auto; font-size:13px; color:#8d8271; }
   .tded { margin-top:10px; font-size:13px; line-height:1.55; color:#a99c80; font-style:italic; }
-  .foot { margin-top:36px; text-align:center; font-size:12px; color:#6f6450; letter-spacing:1px; line-height:1.7; }
+  .foot { margin-top:40px; text-align:center; font-size:12px; color:#6f6450; letter-spacing:1px; line-height:1.7; }
   .foot a { color:#c9a227; text-decoration:none; }
 </style>
 </head>
@@ -48,7 +51,7 @@
   <div class="mono">TF</div>
   <h1>TAT2FACE</h1>
   <div class="sub">The Synthetic Sound of Real Life</div>
-  <div class="byline">Original music by Chad Kerns</div>
+  <div class="byline">All the music of Chad Kerns — singles &amp; the full album</div>
 
   <div class="now" id="nowPlaying">Pick a track</div>
   <div class="playerbar">
@@ -61,7 +64,7 @@
     <div class="times"><span id="tCur">0:00</span><span id="tEnd">0:00</span></div>
   </div>
 
-  <div class="tracks" id="trackList"></div>
+  <div id="sections"></div>
 
   <div class="foot">
     CREATE &#9670; INSPIRE &#9670; SURVIVE<br>
@@ -71,48 +74,81 @@
 
 <audio id="audio" preload="metadata"></audio>
 <script>
-  var TRACKS = [
-    { title: "All My Friends Are Murderers", file: "track-murderers-v1.mp3", dur: "4:30",
-      ded: "For Theodore Johnson, Patrick Barra, Death Row Danny Fyffer, Zach Eggers, Big Chuck Espinoza, Earl Craig, Tommy Drew, Polar Bear \u2014 and all our brothers who ain\u2019t coming home." },
-    { title: "All My Friends Are Murderers (Version 2)", file: "track-murderers-v2.mp3", dur: "4:37",
-      ded: "For Theodore Johnson, Patrick Barra, Death Row Danny Fyffer, Zach Eggers, Big Chuck Espinoza, Earl Craig, Tommy Drew, Polar Bear \u2014 and all our brothers who ain\u2019t coming home." },
-    { title: "Brookville Pines", file: "track-brookville-pines.mp3", dur: "3:26", ded: "" }
+  var DED = "For Theodore Johnson, Patrick Barra, Death Row Danny Fyffer, Zach Eggers, Big Chuck Espinoza, Earl Craig, Tommy Drew, Polar Bear \u2014 and all our brothers who ain\u2019t coming home.";
+  var SECTIONS = [
+    { name: "The Singles", note: "TAT2FACE \u2014 THE SYNTHETIC SOUND OF REAL LIFE", tracks: [
+      { title: "All My Friends Are Murderers", file: "track-murderers-v1.mp3", dur: "4:31", ded: DED },
+      { title: "All My Friends Are Murderers (Version 2)", file: "track-murderers-v2.mp3", dur: "4:37", ded: DED },
+      { title: "Brookville Pines", file: "track-brookville-pines.mp3", dur: "3:22" },
+      { title: "House Beneath the Water (Remastered)", file: "s-house-beneath-the-water.m4a", dur: "5:34" },
+      { title: "Lessons", file: "s-lessons.mp3", dur: "4:20" },
+      { title: "Tattoo-Face Bleed (Remastered)", file: "s-tattoo-face-bleed.mp3", dur: "3:25" },
+      { title: "Toxic Heaven", file: "s-toxic-heaven.m4a", dur: "4:48" },
+      { title: "Devil in My Veins", file: "s-devil-in-my-veins.mp3", dur: "4:11" },
+      { title: "You Changed Me", file: "s-you-changed-me.mp3", dur: "4:03" }
+    ]},
+    { name: "Desecrated Dimensions", note: "THE FULL ALBUM", tracks: [
+      { title: "Curb Stomp Your Local Pedo", file: "a01-curb-stomp.mp3", dur: "4:22" },
+      { title: "Vivisection", file: "a02-vivisection.mp3", dur: "3:50" },
+      { title: "Global Hate", file: "a03-global-hate.mp3", dur: "4:26" },
+      { title: "Tat2Face", file: "a04-tat2face.mp3", dur: "4:28" },
+      { title: "Plagueborn", file: "a05-plagueborn.mp3", dur: "4:00" },
+      { title: "Back Stabber", file: "a06-back-stabber.mp3", dur: "7:59" },
+      { title: "Level 5 Slasher", file: "a07-level-5-slasher.mp3", dur: "3:45" },
+      { title: "Skull Collector", file: "a08-skull-collector.mp3", dur: "3:35" },
+      { title: "Ghost Operator", file: "a09-ghost-operator.mp3", dur: "3:49" },
+      { title: "Cold Dead Hands", file: "a10-cold-dead-hands.mp3", dur: "3:30" },
+      { title: "Dogs Love Rats", file: "a11-dogs-love-rats.mp3", dur: "3:47" },
+      { title: "Hung On The Hook", file: "a12-hung-on-the-hook.mp3", dur: "3:31" },
+      { title: "Trench Rot", file: "a13-trench-rot.mp3", dur: "3:57" }
+    ]}
   ];
+  var FLAT = [];
+  SECTIONS.forEach(function(s){ s.tracks.forEach(function(t){ FLAT.push(t); }); });
+
   var audio = document.getElementById('audio');
-  var list = document.getElementById('trackList');
+  var host = document.getElementById('sections');
   var playBtn = document.getElementById('playBtn');
   var nowEl = document.getElementById('nowPlaying');
   var prog = document.getElementById('prog');
   var tCur = document.getElementById('tCur'), tEnd = document.getElementById('tEnd');
   var cur = -1, seeking = false;
 
-  TRACKS.forEach(function(t, i){
-    var d = document.createElement('div'); d.className = 'track'; d.id = 'track' + i;
-    var ded = t.ded ? '<div class="tded">' + t.ded + '</div>' : '';
-    d.innerHTML = '<div class="trow"><div class="tico" id="ico' + i + '">&#9654;</div>' +
-      '<div class="tname">' + t.title + '</div><div class="tdur">' + t.dur + '</div></div>' + ded;
-    d.addEventListener('click', function(){ if (cur === i) { toggle(); } else { load(i, true); } });
-    list.appendChild(d);
+  var gi = 0;
+  SECTIONS.forEach(function(s){
+    var h = document.createElement('div'); h.className = 'sect'; h.textContent = s.name; host.appendChild(h);
+    var n = document.createElement('div'); n.className = 'sectnote'; n.textContent = s.note; host.appendChild(n);
+    var box = document.createElement('div'); box.className = 'tracks'; host.appendChild(box);
+    s.tracks.forEach(function(t, li){
+      var i = gi++;
+      var d = document.createElement('div'); d.className = 'track'; d.id = 'track' + i;
+      var ded = t.ded ? '<div class="tded">' + t.ded + '</div>' : '';
+      var num = s.name === "Desecrated Dimensions" ? '<div class="tnum">' + (li + 1) + '</div>' : '';
+      d.innerHTML = '<div class="trow">' + num + '<div class="tico" id="ico' + i + '">&#9654;</div>' +
+        '<div class="tname">' + t.title + '</div><div class="tdur">' + t.dur + '</div></div>' + ded;
+      d.addEventListener('click', function(){ if (cur === i) { toggle(); } else { load(i, true); } });
+      box.appendChild(d);
+    });
   });
 
   function fmt(s){ if (!isFinite(s)) s = 0; s = Math.max(0, Math.floor(s)); return Math.floor(s/60) + ':' + ('0' + (s%60)).slice(-2); }
   function mark(){
-    TRACKS.forEach(function(_, i){
+    FLAT.forEach(function(_, i){
       document.getElementById('track' + i).classList.toggle('active', i === cur);
       document.getElementById('ico' + i).innerHTML = (i === cur && !audio.paused) ? '&#10073;&#10073;' : '&#9654;';
     });
     playBtn.innerHTML = audio.paused ? '&#9654;' : '&#10073;&#10073;';
   }
   function load(i, play){
-    cur = i; audio.src = TRACKS[i].file;
-    nowEl.textContent = TRACKS[i].title;
+    cur = i; audio.src = FLAT[i].file;
+    nowEl.textContent = FLAT[i].title;
     if (play) audio.play();
     mark();
   }
   function toggle(){ if (cur < 0) { load(0, true); return; } if (audio.paused) audio.play(); else audio.pause(); }
   playBtn.addEventListener('click', toggle);
-  document.getElementById('nextBtn').addEventListener('click', function(){ load(cur < 0 ? 0 : (cur + 1) % TRACKS.length, true); });
-  document.getElementById('prevBtn').addEventListener('click', function(){ load(cur < 0 ? 0 : (cur - 1 + TRACKS.length) % TRACKS.length, true); });
+  document.getElementById('nextBtn').addEventListener('click', function(){ load(cur < 0 ? 0 : (cur + 1) % FLAT.length, true); });
+  document.getElementById('prevBtn').addEventListener('click', function(){ load(cur < 0 ? 0 : (cur - 1 + FLAT.length) % FLAT.length, true); });
   audio.addEventListener('play', mark);
   audio.addEventListener('pause', mark);
   audio.addEventListener('loadedmetadata', function(){ tEnd.textContent = fmt(audio.duration); });
@@ -120,7 +156,7 @@
     if (!seeking && audio.duration) prog.value = Math.floor(audio.currentTime / audio.duration * 1000);
     tCur.textContent = fmt(audio.currentTime);
   });
-  audio.addEventListener('ended', function(){ load((cur + 1) % TRACKS.length, true); });
+  audio.addEventListener('ended', function(){ load((cur + 1) % FLAT.length, true); });
   prog.addEventListener('input', function(){ seeking = true; });
   prog.addEventListener('change', function(){ if (audio.duration) audio.currentTime = prog.value / 1000 * audio.duration; seeking = false; });
 </script>
